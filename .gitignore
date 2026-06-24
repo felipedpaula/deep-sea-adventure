@@ -1,0 +1,16 @@
+# Dependencias
+node_modules/
+
+# Build de producao
+dist/
+
+# Variaveis de ambiente
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
+*.log

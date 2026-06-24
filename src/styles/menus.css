@@ -1,0 +1,10 @@
+#menus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-overlay);
+}
+
+#menus[hidden] {
+  display: none;
+}

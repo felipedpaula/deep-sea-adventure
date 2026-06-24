@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Deep Sea Adventure - jogo interativo de exploracao oceanica." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Chelsea+Market&display=swap" rel="stylesheet" />
+    <title>Deep Sea Adventure</title>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="game-canvas"></canvas>
+      <section id="hud" aria-label="HUD do jogo">
+        <div id="environment-title" aria-live="polite"></div>
+        <div id="depth-marker" class="hud-item">
+          <span class="hud-label">Profundidade</span>
+          <span class="hud-value"><span id="depth-value">15</span> m</span>
+        </div>
+      </section>
+      <aside id="menus" aria-label="Menus e telas auxiliares" hidden></aside>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
