@@ -75,12 +75,12 @@ export function createOceanScenery() {
   const rng = createRng(oceanScenery.seed);
   const rockWalls = createRockWalls();
   const terrainPoints = [];
+  const reefParticles = [];
   const twilightParticles = [];
   const midnightParticles = [];
   const abyssalParticles = [];
   const trenchParticles = [];
   const trenchCenterX = width * 0.7;
-  const trenchRadius = width * 0.12;
 
   function depthToY(depth) {
     return depth * pixelsPerMeter;
@@ -132,11 +132,22 @@ export function createOceanScenery() {
 
   for (let x = 0; x <= width + oceanScenery.floor.segmentWidth; x += oceanScenery.floor.segmentWidth) {
     const ridgeLift = -Math.exp(-((x - width * 0.22) ** 2) / (2 * (width * 0.16) ** 2)) * 1600;
-    const trenchDrop = Math.exp(-((x - trenchCenterX) ** 2) / (2 * trenchRadius ** 2)) * 9600;
     const wave = Math.sin(x * 0.0038) * 140 + Math.cos(x * 0.0072) * 55;
     const noise = (rng() - 0.5) * 120;
-    const y = clamp(depthToY(1140) + ridgeLift + trenchDrop + wave + noise, depthToY(980), height - 160);
+    const y = clamp(depthToY(1140) + ridgeLift + wave + noise, depthToY(980), height - 160);
     terrainPoints.push({ x: Math.min(x, width), y });
+  }
+
+  for (let i = 0; i < oceanScenery.reef.particleCount; i++) {
+    const y = depthToY(10 + rng() * 180);
+    reefParticles.push(createDepthElement('reef-particle', y, 16, {
+      x: rng() * width,
+      y,
+      radius: 1 + rng() * 2.5,
+      alpha: 0.25 + rng() * 0.25,
+      vx: (rng() - 0.5) * 7,
+      vy: (rng() - 0.5) * 3,
+    }));
   }
 
   for (let i = 0; i < oceanScenery.twilight.particleCount; i++) {
@@ -146,6 +157,8 @@ export function createOceanScenery() {
       y,
       radius: 1 + rng() * 2.2,
       alpha: 0.08 + rng() * 0.12,
+      vx: (rng() - 0.5) * 5,
+      vy: (rng() - 0.5) * 2,
     }));
   }
 
@@ -158,6 +171,8 @@ export function createOceanScenery() {
       alpha: 0.16 + rng() * 0.18,
       blur: 8 + rng() * 18,
       pulse: rng(),
+      vx: (rng() - 0.5) * 4,
+      vy: (rng() - 0.5) * 1.5,
     }));
   }
 
@@ -168,6 +183,8 @@ export function createOceanScenery() {
       y,
       radius: 0.7 + rng() * 1.8,
       alpha: 0.08 + rng() * 0.12,
+      vx: (rng() - 0.5) * 4,
+      vy: (rng() - 0.5) * 1.5,
     }));
   }
 
@@ -178,6 +195,8 @@ export function createOceanScenery() {
       y,
       radius: 0.8 + rng() * 2,
       alpha: 0.04 + rng() * 0.08,
+      vx: (rng() - 0.5) * 3,
+      vy: (rng() - 0.5) * 1.2,
     }));
   }
 
@@ -201,7 +220,12 @@ export function createOceanScenery() {
       ctx.fillStyle = style.hazeColor;
       ctx.fillRect(0, bandTop, width, bandBottom - bandTop);
 
-      const wallWidth = environment.key === 'trench' ? 320 : 210;
+      let wallWidth = 210;
+      if (environment.key === 'trench') {
+        wallWidth = 320;
+      } else if (environment.key === 'abyssal') {
+        wallWidth = 120;
+      }
       const leftGradient = ctx.createLinearGradient(0, 0, wallWidth, 0);
       leftGradient.addColorStop(0, style.wallColor);
       leftGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
@@ -299,6 +323,13 @@ export function createOceanScenery() {
     }
   }
 
+  function renderReefParticle(ctx, particle) {
+    ctx.fillStyle = `rgba(255, 248, 230, ${particle.alpha})`;
+    ctx.beginPath();
+    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
   function renderTwilightParticle(ctx, particle) {
     ctx.fillStyle = `rgba(188, 220, 236, ${particle.alpha})`;
     ctx.beginPath();
@@ -347,6 +378,31 @@ export function createOceanScenery() {
     }
   }
 
+  function updateParticles(particles, dt) {
+    for (const p of particles) {
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      if (p.x < 0) p.x += width;
+      if (p.x > width) p.x -= width;
+      const halfHeight = p.radius || 10;
+      if (p.y + halfHeight < 0) {
+        p.y = height + (p.y % height);
+      } else if (p.y - halfHeight > height) {
+        p.y = p.y % height;
+      }
+      p.minY = p.y - halfHeight;
+      p.maxY = p.y + halfHeight;
+    }
+  }
+
+  function update(dt) {
+    updateParticles(reefParticles, dt);
+    updateParticles(twilightParticles, dt);
+    updateParticles(midnightParticles, dt);
+    updateParticles(abyssalParticles, dt);
+    updateParticles(trenchParticles, dt);
+  }
+
   function render(ctx, camera) {
     const viewTop = camera.y - oceanScenery.cullingMargin;
     const viewBottom = camera.y + camera.viewportHeight + oceanScenery.cullingMargin;
@@ -354,13 +410,14 @@ export function createOceanScenery() {
     renderEnvironmentBands(ctx, camera);
     rockWalls.render(ctx, camera);
     renderTerrain(ctx, camera);
+    renderVisibleElements(ctx, reefParticles, renderReefParticle, viewTop, viewBottom);
     renderVisibleElements(ctx, twilightParticles, renderTwilightParticle, viewTop, viewBottom);
     renderVisibleElements(ctx, midnightParticles, renderMidnightParticle, viewTop, viewBottom);
     renderVisibleElements(ctx, abyssalParticles, renderAbyssalParticle, viewTop, viewBottom);
     renderVisibleElements(ctx, trenchParticles, renderTrenchParticle, viewTop, viewBottom);
   }
 
-  return { render };
+  return { update, render };
 }
 
 export default createOceanScenery;

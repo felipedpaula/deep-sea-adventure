@@ -16,6 +16,9 @@ export function createGame(canvas, entities = [], input = null, camera = null, h
     for (const entity of entities) {
       entity.update(dt, inputState, camera);
     }
+    if (scenery && scenery.update) {
+      scenery.update(dt);
+    }
     if (camera && entities.length > 0) {
       camera.resizeViewport(canvas.width, canvas.height);
       camera.follow(entities[0].state);

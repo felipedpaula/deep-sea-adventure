@@ -112,22 +112,23 @@ export const worldConfig = {
       clusterCount: 32,
       shellCount: 24,
       wallMargin: 220,
+      particleCount: 72,
     },
     twilight: {
-      particleCount: 80,
+      particleCount: 110,
       silhouetteCount: 14,
     },
     midnight: {
-      glowCount: 90,
+      glowCount: 125,
       clusterCount: 18,
     },
     abyssal: {
-      particleCount: 140,
+      particleCount: 193,
       rockCount: 24,
     },
     trench: {
       shardCount: 22,
-      particleCount: 120,
+      particleCount: 166,
     },
     floor: {
       segmentWidth: 120,
