@@ -1,0 +1,92 @@
+<svg width="880" height="442" viewBox="-40 -20 880 442" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+  .whole-dolphin {
+    animation: swim-whole 4.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+  
+  .body-skew {
+    transform-origin: 450px 250px;
+    animation: swim-body-skew 4.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    animation-delay: -0.45s;
+  }
+  
+  .pec-group {
+    transform-origin: 485px 258px;
+    animation: swim-pec 4.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+  
+  .tail-group {
+    transform-origin: 165px 238px;
+    animation: swim-tail 4.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    animation-delay: -1.125s;
+  }
+
+  @keyframes swim-whole {
+    0% {
+      transform: translateY(8px) rotate(1.5deg);
+    }
+    50% {
+      transform: translateY(-8px) rotate(-1.5deg);
+    }
+    100% {
+      transform: translateY(8px) rotate(1.5deg);
+    }
+  }
+
+  @keyframes swim-body-skew {
+    0% {
+      transform: skewX(-1.5deg);
+    }
+    50% {
+      transform: skewX(1.5deg);
+    }
+    100% {
+      transform: skewX(-1.5deg);
+    }
+  }
+
+  @keyframes swim-pec {
+    0% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(-6deg);
+    }
+    50% {
+      transform: rotate(0deg);
+    }
+    75% {
+      transform: rotate(6deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  @keyframes swim-tail {
+    0% {
+      transform: rotate(-10deg);
+    }
+    50% {
+      transform: rotate(10deg);
+    }
+    100% {
+      transform: rotate(-10deg);
+    }
+  }
+</style>
+<g class="whole-dolphin">
+  <g class="tail-group">
+    <path d="M83.4937 401.117C134.077 305.502 58.4903 278.832 163.184 234.761C187.116 302.704 151.438 377.185 83.4937 401.117Z" fill="#8E8E8E"/>
+    <path d="M0 164.075C99.3388 206.882 57.1535 275.035 166.355 243.765C142.424 175.821 67.944 140.143 0 164.075Z" fill="#8E8E8E"/>
+  </g>
+  <g class="body-skew">
+    <path d="M774.315 208.623C760.772 208.623 749.205 198.852 746.94 185.5L738.458 135.468C731.343 93.3922 694.906 62.6123 652.232 62.6123C652.232 62.6123 639.508 62.6211 623.606 62.6387C591.841 62.6721 560.845 51.3141 537.525 29.7436C514.108 8.0853 481.694 -3.37808 448.239 0.878746C432.599 2.86749 418.239 7.96935 405.616 15.4289C400.164 18.6509 400.516 26.7008 406.312 29.2552C427.121 38.4277 444.843 53.909 456.733 73.7296C340.379 95.5882 231.624 149.117 142.905 229.196C135.193 236.171 155.976 259.993 155.976 259.993H773.59C787.43 259.993 799.333 249.349 799.97 235.524C800.652 220.775 788.895 208.623 774.315 208.623Z" fill="#8E8E8E"/>
+    <path d="M800 234.308C800 248.486 788.493 259.993 774.315 259.993H251.409C298.703 226.842 355.467 208.623 414.216 208.623H774.315C788.493 208.623 800 220.113 800 234.308Z" fill="#D2D2D2"/>
+    <path d="M697.209 204.113C703.691 204.113 708.945 198.859 708.945 192.378C708.945 185.896 703.691 180.642 697.209 180.642C690.728 180.642 685.474 185.896 685.474 192.378C685.474 198.859 690.728 204.113 697.209 204.113Z" fill="#4D4D4D"/>
+  </g>
+  <g class="pec-group">
+    <path d="M463.386 258.375L429.18 292.581L429.519 292.92C451.947 315.348 488.308 315.348 510.734 292.92L545.279 258.375C522.665 235.761 486 235.761 463.386 258.375Z" fill="#8E8E8E"/>
+  </g>
+</g>
+</svg>

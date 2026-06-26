@@ -1,13 +1,17 @@
 import fishImgSrc from '../assets/animals/fish-animated.svg';
 
 export function createFishSchool({
+  imageSrc = fishImgSrc,
   centerX,
   centerY,
-  amplitude = 200,
+  amplitudeX = 200,
+  amplitudeY = 0,
   speed = 0.5,
   fishWidth = 35,
   fishHeight = 35,
   camera,
+  spriteFacesRight = false,
+  rotateToMovement = false,
   offsets = [
     { x: 0, y: -20 },
     { x: 25, y: 10 },
@@ -18,7 +22,7 @@ export function createFishSchool({
 
   const elements = offsets.map(() => {
     const img = document.createElement('img');
-    img.src = fishImgSrc;
+    img.src = imageSrc;
     img.style.position = 'absolute';
     img.style.pointerEvents = 'none';
     img.style.zIndex = '5';
@@ -30,27 +34,36 @@ export function createFishSchool({
 
   let time = 0;
   let prevX = centerX;
+  let prevY = centerY;
   const fish = offsets.map((off) => ({
     offsetX: off.x,
     offsetY: off.y,
     x: centerX + off.x,
     y: centerY + off.y,
     facing: 1,
+    angle: 0,
   }));
 
   function update(dt) {
     time += dt;
 
-    const schoolX = centerX + amplitude * Math.sin(time * speed);
+    const phase = time * speed;
+    const schoolX = centerX + amplitudeX * Math.sin(phase);
+    const schoolY = centerY + amplitudeY * Math.sin(phase);
     const dx = schoolX - prevX;
+    const dy = schoolY - prevY;
     prevX = schoolX;
+    prevY = schoolY;
 
-    const facing = dx >= 0 ? -1 : 1;
+    const movingRight = dx >= 0;
+    const facing = movingRight === spriteFacesRight ? 1 : -1;
+    const angle = rotateToMovement ? Math.atan2(dy, Math.abs(dx)) : 0;
 
     for (let i = 0; i < fish.length; i++) {
       fish[i].x = schoolX + fish[i].offsetX;
-      fish[i].y = centerY + fish[i].offsetY;
+      fish[i].y = schoolY + fish[i].offsetY;
       fish[i].facing = facing;
+      fish[i].angle = angle;
     }
   }
 
@@ -62,7 +75,9 @@ export function createFishSchool({
       const el = elements[i];
       el.style.left = `${screen.x - fishWidth / 2}px`;
       el.style.top = `${screen.y - fishHeight / 2}px`;
-      el.style.transform = fish[i].facing === -1 ? 'scaleX(-1)' : 'scaleX(1)';
+      el.style.transform = rotateToMovement
+        ? `scaleX(${fish[i].facing}) rotate(${fish[i].angle}rad)`
+        : `scaleX(${fish[i].facing})`;
     }
   }
 

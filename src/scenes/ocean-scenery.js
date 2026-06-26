@@ -131,10 +131,9 @@ export function createOceanScenery() {
   }
 
   for (let x = 0; x <= width + oceanScenery.floor.segmentWidth; x += oceanScenery.floor.segmentWidth) {
-    const ridgeLift = -Math.exp(-((x - width * 0.22) ** 2) / (2 * (width * 0.16) ** 2)) * 1600;
-    const wave = Math.sin(x * 0.0038) * 140 + Math.cos(x * 0.0072) * 55;
-    const noise = (rng() - 0.5) * 120;
-    const y = clamp(depthToY(1140) + ridgeLift + wave + noise, depthToY(980), height - 160);
+    const wave = Math.sin(x * 0.0038) * 40 + Math.cos(x * 0.0072) * 20;
+    const noise = (rng() - 0.5) * 50;
+    const y = clamp(depthToY(2200) + wave + noise, depthToY(2100), height);
     terrainPoints.push({ x: Math.min(x, width), y });
   }
 

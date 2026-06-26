@@ -28,8 +28,9 @@ function generateRocks(side) {
   const spacing = 90;
   const baseX = side === 'left' ? 0 : worldConfig.width;
   const dir = side === 'left' ? -1 : 1;
+  const abyssalStartY = 1000 * worldConfig.pixelsPerMeter;
 
-  for (let y = -50; y < worldConfig.height + 100; y += spacing) {
+  for (let y = -50; y < abyssalStartY; y += spacing) {
     const cy = y + rng() * spacing * 0.4;
     const radius = 40 + rng() * 50;
     const cx = baseX + dir * (radius * 0.3 + rng() * 30);

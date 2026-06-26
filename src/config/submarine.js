@@ -1,8 +1,8 @@
 export const submarineConfig = {
-  width: 160,
-  height: 160,
+  width: 120,
+  height: 120,
   speed: 160,
-  boostMultiplier: 1.5,
+  boostMultiplier: 1.35,
   smoothing: 8,
   maxTilt: Math.PI / 6,
   tiltSmoothing: 8,

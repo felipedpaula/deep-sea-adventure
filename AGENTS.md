@@ -22,9 +22,10 @@
 
 - Game entities use world coordinates, not screen coordinates. The camera transform is applied before rendering world objects.
 - Canvas background and sun rays render in screen space before `camera.apply(ctx)`; scenery and entities render after it; HUD stays DOM/screen-space.
-- Depth is derived from world Y using `worldConfig.pixelsPerMeter` (`10px = 1m`); current world is `3000 x 22000` and max depth is `2200m`.
+- Depth is derived from world Y using `worldConfig.pixelsPerMeter` (`10px = 1m`); current world is `6000 x 22000` and max depth is `2200m`.
 - Mouse movement must convert screen coordinates with `camera.screenToWorld(...)` before steering world-space entities.
 - Canvas sizing uses CSS pixels for viewport getters and caps DPR via `canvasConfig.maxDpr`; do not mix raw canvas backing pixels into game coordinates.
+- Animated SVG animals that rely on internal CSS keyframes must be rendered as DOM `<img>` elements inside `#app`, positioned each frame with `camera.worldToScreen(...)`; do not draw those SVGs with canvas `drawImage()` because that freezes the embedded animation.
 
 ## Implementation Conventions
 
@@ -32,6 +33,7 @@
 - Scenery generation is deterministic and created once in factories, with viewport culling during render. Avoid regenerating decorative elements per frame.
 - Controls are fixed in `src/game/input.js`: arrows/WASD move, Shift boosts, left mouse steers, right mouse boosts, and context menu is suppressed on the canvas.
 - Imported assets go through Vite module imports, as in `src/entities/submarine.js` importing the submarine PNG.
+- For animated animal SVGs, append DOM `<img>` nodes with `position: absolute`, `pointer-events: none`, and a z-index above the canvas; movement still uses world coordinates and entity `update/render`, but `render` should update DOM position and `scaleX(...)` for facing direction.
 - If a completed spec changes behavior or scope, keep README status and the relevant `specs/*.md` acceptance notes consistent.
 
 ## Documentation Maintenance

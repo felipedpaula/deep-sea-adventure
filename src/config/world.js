@@ -1,5 +1,5 @@
 export const worldConfig = {
-  width: 3000,
+  width: 6000,
   height: 22000,
   startDepth: 15,
   pixelsPerMeter: 10,
@@ -109,26 +109,26 @@ export const worldConfig = {
     transitionDepth: 70,
     cullingMargin: 220,
     reef: {
-      clusterCount: 32,
-      shellCount: 24,
+      clusterCount: 64,
+      shellCount: 48,
       wallMargin: 220,
-      particleCount: 72,
+      particleCount: 144,
     },
     twilight: {
-      particleCount: 110,
-      silhouetteCount: 14,
+      particleCount: 220,
+      silhouetteCount: 28,
     },
     midnight: {
-      glowCount: 125,
-      clusterCount: 18,
+      glowCount: 250,
+      clusterCount: 36,
     },
     abyssal: {
-      particleCount: 193,
-      rockCount: 24,
+      particleCount: 386,
+      rockCount: 48,
     },
     trench: {
-      shardCount: 22,
-      particleCount: 166,
+      shardCount: 44,
+      particleCount: 332,
     },
     floor: {
       segmentWidth: 120,
